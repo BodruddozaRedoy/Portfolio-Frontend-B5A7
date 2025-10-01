@@ -40,13 +40,13 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div 
               key={index}
-              className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-blue-500 transition-colors"
+              className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-blue-500 transition-colors flex flex-col"
             >
               <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
                 Project Image
               </div>
               
-              <div className="p-6">
+              <div className="p-6 flex-1">
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {project.title}
                 </h3>
@@ -65,17 +65,17 @@ export default function Projects() {
                   ))}
                 </div>
                 
-                <div className="flex space-x-4">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+              </div>
+                <div className="flex space-x-4 px-6 pb-4 items-center w-full justify-center border-t border-muted-foreground  pt-4">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2 !py-5 !px-6">
                     <Github size={16} />
                     Code
                   </Button>
-                  <Button size="sm" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+                  <Button size="sm" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 !py-5 !px-6">
                     <ExternalLink size={16} />
                     Live Demo
                   </Button>
                 </div>
-              </div>
             </div>
           ))}
         </div>

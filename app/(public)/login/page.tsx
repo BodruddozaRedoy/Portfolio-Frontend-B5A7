@@ -36,28 +36,27 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div
-        className='absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27 viewBox=%270 0 60 60%27%3E%3Cg fill=%27none%27 fill-rule=%27evenodd%27%3E%3Cg fill=%27%236366f1%27 fill-opacity=%270.05%27%3E%3Cpath d=%27m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")] opacity-30'
-      ></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Glow Accents */}
+      <div className="absolute -top-32 -left-32 w-80 h-80 bg-indigo-600/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo / Title */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Portfolio
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+              DevRedoy
             </h1>
           </Link>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-400 mt-2">
             Welcome back! Please sign in to continue.
           </p>
         </div>
 
-        <Card className="backdrop-blur-lg bg-white/80 shadow-2xl border-0">
+        <Card className="backdrop-blur-lg bg-gray-900/80 shadow-2xl border border-gray-800 p-5 py-10">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-800 text-gray-300">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
@@ -65,10 +64,10 @@ export default function Login() {
             {/* Login Form */}
             <TabsContent value="login">
               <CardHeader className="space-y-1 pb-4">
-                <CardTitle className="text-2xl font-bold text-center">
+                <CardTitle className="text-2xl font-bold text-center text-white">
                   Sign In
                 </CardTitle>
-                <CardDescription className="text-center">
+                <CardDescription className="text-center text-gray-400">
                   Enter your credentials to access your account
                 </CardDescription>
               </CardHeader>
@@ -76,20 +75,17 @@ export default function Login() {
               <form onSubmit={handleLogin}>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-gray-300">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                       <Input
                         id="email"
                         type="email"
                         placeholder="john@example.com"
-                        className="pl-10 h-12"
+                        className="pl-10 h-12 bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                         value={loginData.email}
                         onChange={(e) =>
-                          setLoginData((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                          }))
+                          setLoginData((prev) => ({ ...prev, email: e.target.value }))
                         }
                         required
                       />
@@ -97,51 +93,41 @@ export default function Login() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password" className="text-gray-300">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                       <Input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder="••••••••"
-                        className="pl-10 pr-10 h-12"
+                        className="pl-10 pr-10 h-12 bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                         value={loginData.password}
                         onChange={(e) =>
-                          setLoginData((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                          }))
+                          setLoginData((prev) => ({ ...prev, password: e.target.value }))
                         }
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                        className="absolute right-3 top-3 text-gray-500 hover:text-gray-300"
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
                 </CardContent>
 
-                <CardFooter className="flex flex-col space-y-4">
+                <CardFooter className="flex flex-col space-y-4 mt-5">
                   <Button
                     type="submit"
-                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    className="w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
                   >
                     Sign In
                   </Button>
-                  <p className="text-sm text-center text-gray-600">
+                  <p className="text-sm text-center text-gray-400">
                     Don&apos;t have an account?{' '}
-                    <button
-                      type="button"
-                      className="text-blue-600 hover:underline"
-                    >
+                    <button type="button" className="text-indigo-400 hover:underline">
                       Sign up instead
                     </button>
                   </p>
@@ -152,10 +138,10 @@ export default function Login() {
             {/* Signup Form */}
             <TabsContent value="signup">
               <CardHeader className="space-y-1 pb-4">
-                <CardTitle className="text-2xl font-bold text-center">
+                <CardTitle className="text-2xl font-bold text-center text-white">
                   Create Account
                 </CardTitle>
-                <CardDescription className="text-center">
+                <CardDescription className="text-center text-gray-400">
                   Join us and start your journey today
                 </CardDescription>
               </CardHeader>
@@ -163,20 +149,17 @@ export default function Login() {
               <form onSubmit={handleSignup}>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="text-gray-300">Full Name</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                       <Input
                         id="name"
                         type="text"
                         placeholder="John Doe"
-                        className="pl-10 h-12"
+                        className="pl-10 h-12 bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                         value={signupData.name}
                         onChange={(e) =>
-                          setSignupData((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                          }))
+                          setSignupData((prev) => ({ ...prev, name: e.target.value }))
                         }
                         required
                       />
@@ -184,20 +167,17 @@ export default function Login() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label htmlFor="signup-email" className="text-gray-300">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                       <Input
                         id="signup-email"
                         type="email"
                         placeholder="john@example.com"
-                        className="pl-10 h-12"
+                        className="pl-10 h-12 bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                         value={signupData.email}
                         onChange={(e) =>
-                          setSignupData((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                          }))
+                          setSignupData((prev) => ({ ...prev, email: e.target.value }))
                         }
                         required
                       />
@@ -205,51 +185,41 @@ export default function Login() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label htmlFor="signup-password" className="text-gray-300">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                       <Input
                         id="signup-password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder="••••••••"
-                        className="pl-10 pr-10 h-12"
+                        className="pl-10 pr-10 h-12 bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                         value={signupData.password}
                         onChange={(e) =>
-                          setSignupData((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                          }))
+                          setSignupData((prev) => ({ ...prev, password: e.target.value }))
                         }
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                        className="absolute right-3 top-3 text-gray-500 hover:text-gray-300"
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
                 </CardContent>
 
-                <CardFooter className="flex flex-col space-y-4">
+                <CardFooter className="flex flex-col space-y-4 mt-5">
                   <Button
                     type="submit"
-                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    className="w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
                   >
                     Create Account
                   </Button>
-                  <p className="text-sm text-center text-gray-600">
+                  <p className="text-sm text-center text-gray-400">
                     Already have an account?{' '}
-                    <button
-                      type="button"
-                      className="text-blue-600 hover:underline"
-                    >
+                    <button type="button" className="text-indigo-400 hover:underline">
                       Sign in instead
                     </button>
                   </p>
