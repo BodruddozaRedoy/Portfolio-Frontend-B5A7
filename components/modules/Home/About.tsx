@@ -1,72 +1,51 @@
-import { Card, CardContent } from '@/components/ui/card'
-import { Award, Users, Coffee, Zap } from 'lucide-react'
-import Image from 'next/image'
-
 export default function About() {
-  const stats = [
-    { icon: Award, label: 'Years Experience', value: '5+' },
-    { icon: Users, label: 'Happy Clients', value: '50+' },
-    { icon: Coffee, label: 'Projects Completed', value: '100+' },
-    { icon: Zap, label: 'Technologies Mastered', value: '20+' },
-  ]
-
   return (
-    <section id="about" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Me</span>
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Passionate about creating exceptional digital experiences through innovative solutions
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg"
-                alt="About Me"
-                fill
-                className="object-cover"
-              />
+    <section id="about" className="py-20 bg-gray-900">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center mb-16 text-white">
+          About Me
+        </h2>
+        
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div>
+            <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <div className="w-72 h-72 bg-gray-800 rounded-full flex items-center justify-center text-gray-400">
+                Your Photo
+              </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl -z-10"></div>
           </div>
-
+          
           <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                I'm a passionate developer who loves to create amazing digital experiences
-              </h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                With over 5 years of experience in web development, I specialize in creating 
-                modern, responsive, and user-friendly applications. My journey started with a 
-                curiosity about how websites work, and it has evolved into a passion for crafting 
-                digital solutions that make a difference.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                I believe in the power of clean code, beautiful design, and seamless user experiences. 
-                When I'm not coding, you can find me exploring new technologies, contributing to 
-                open-source projects, or sharing my knowledge with the developer community.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {stats.map((stat, index) => (
-                <Card key={index} className="text-center p-4 hover:shadow-lg transition-shadow">
-                  <CardContent className="p-0">
-                    <stat.icon className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                    <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-600">{stat.label}</div>
-                  </CardContent>
-                </Card>
-              ))}
+            <h3 className="text-2xl font-semibold text-white mb-4">
+              Crafting Digital Experiences
+            </h3>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              I'm a passionate full-stack developer with over 5 years of experience 
+              creating web applications that solve real-world problems. I specialize 
+              in modern JavaScript frameworks and love working on projects that 
+              challenge me to grow.
+            </p>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              When I'm not coding, you can find me contributing to open-source projects, 
+              writing technical blogs, or exploring new technologies in the ever-evolving 
+              web development landscape.
+            </p>
+            
+            <div className="grid grid-cols-2 gap-4 mt-8">
+              <div className="text-gray-300">
+                <p><strong className="text-white">Name:</strong> John Doe</p>
+                <p><strong className="text-white">Email:</strong> hello@example.com</p>
+                <p><strong className="text-white">Location:</strong> San Francisco, CA</p>
+              </div>
+              <div className="text-gray-300">
+                <p><strong className="text-white">Experience:</strong> 5+ Years</p>
+                <p><strong className="text-white">Freelance:</strong> Available</p>
+                <p><strong className="text-white">Education:</strong> Computer Science</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -4,11 +4,11 @@ import React from 'react'
 
 export default function PublicLayout({children}:{children:React.ReactNode}) {
   return (
-    <div>
+    <div className=''>
         <nav>
             <Navbar/>
         </nav>
-        <main>
+        <main className=''>
             {children}
         </main>
         <footer>

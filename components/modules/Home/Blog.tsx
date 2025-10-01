@@ -1,79 +1,77 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Calendar, ArrowRight, User } from 'lucide-react'
-import { blogs } from '@/data/blogs'
-import Link from 'next/link'
-import Image from 'next/image'
+import { Button } from '@/components/ui/button';
+import { Calendar, ArrowRight } from 'lucide-react';
 
-export default function Blog() {
+const blogs = [
+  {
+    title: "Building Scalable React Applications",
+    excerpt: "Learn how to structure your React applications for scalability and maintainability with best practices and patterns.",
+    date: "Dec 15, 2023",
+    readTime: "5 min read",
+    category: "React"
+  },
+  {
+    title: "The Power of TypeScript in Modern Web Development",
+    excerpt: "Exploring how TypeScript can improve your development workflow and catch errors before they reach production.",
+    date: "Nov 28, 2023",
+    readTime: "8 min read",
+    category: "TypeScript"
+  },
+  {
+    title: "Mastering CSS Grid and Flexbox",
+    excerpt: "A comprehensive guide to creating responsive layouts with CSS Grid and Flexbox techniques.",
+    date: "Nov 12, 2023",
+    readTime: "6 min read",
+    category: "CSS"
+  }
+];
+
+export default function Blogs() {
   return (
-    <section id="blog" className="py-20 bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Latest <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Blog</span>
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Sharing insights, tutorials, and thoughts on web development and technology
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs.slice(0, 6).map((blog) => (
-            <Card key={blog.id} className="group overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="relative overflow-hidden">
-                <Image
-                  src={blog.image}
-                  alt={blog.title}
-                  width={400}
-                  height={200}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <Badge className="absolute top-4 left-4 bg-blue-600">
-                  {blog.category}
-                </Badge>
+    <section id="blogs" className="py-20 bg-black">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center mb-16 text-white">
+          Latest Blogs
+        </h2>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {blogs.map((blog, index) => (
+            <article 
+              key={index}
+              className="bg-gray-900 p-6 rounded-lg border border-gray-800 hover:border-blue-500 transition-colors group"
+            >
+              <div className="flex items-center text-gray-400 text-sm mb-4">
+                <Calendar size={16} className="mr-2" />
+                <span>{blog.date}</span>
+                <span className="mx-2">•</span>
+                <span>{blog.readTime}</span>
               </div>
               
-              <CardHeader>
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-2">
-                  <div className="flex items-center gap-1">
-                    <User className="w-4 h-4" />
-                    <span>John Doe</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{blog.date}</span>
-                  </div>
-                </div>
-                <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
-                  {blog.title}
-                </CardTitle>
-              </CardHeader>
+              <span className="inline-block px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-sm mb-4">
+                {blog.category}
+              </span>
               
-              <CardContent>
-                <p className="text-gray-600 mb-4 line-clamp-3">{blog.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">{blog.readTime}</span>
-                  <Link href={`/blog/${blog.slug}`}>
-                    <Button variant="ghost" size="sm" className="group">
-                      Read More
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                {blog.title}
+              </h3>
+              
+              <p className="text-gray-300 mb-4 leading-relaxed">
+                {blog.excerpt}
+              </p>
+              
+              <Button variant="ghost" className="p-0 text-blue-400 hover:text-blue-300 group">
+                Read More
+                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </article>
           ))}
         </div>
-
+        
         <div className="text-center mt-12">
-          <Button size="lg" variant="outline">
-            View All Posts
-            <ArrowRight className="w-4 h-4 ml-2" />
+          <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800">
+            View All Articles
           </Button>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,95 +1,85 @@
-'use client'
+import { Button } from '@/components/ui/button';
+import { ExternalLink, Github } from 'lucide-react';
 
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { ExternalLink, Github, Filter } from 'lucide-react'
-import { projects } from '@/data/projects'
-import Image from 'next/image'
+const projects = [
+  {
+    title: "E-Commerce Platform",
+    description: "A full-stack e-commerce solution with React, Node.js, and PostgreSQL. Features include user authentication, payment processing, and admin dashboard.",
+    image: "/api/placeholder/400/250",
+    technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    title: "Task Management App",
+    description: "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
+    image: "/api/placeholder/400/250",
+    technologies: ["Next.js", "TypeScript", "Socket.io", "MongoDB"],
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    title: "Weather Dashboard",
+    description: "A beautiful weather dashboard with location-based forecasts, interactive maps, and detailed weather analytics.",
+    image: "/api/placeholder/400/250",
+    technologies: ["Vue.js", "D3.js", "Weather API", "Tailwind CSS"],
+    github: "https://github.com",
+    live: "https://example.com"
+  }
+];
 
 export default function Projects() {
-  const [filter, setFilter] = useState('All')
-  const categories = ['All', 'Web App', 'Mobile App', 'E-commerce', 'Portfolio']
-  
-  const filteredProjects = filter === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === filter)
-
   return (
-    <section id="projects" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Projects</span>
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            A showcase of my recent work and creative solutions
-          </p>
-        </div>
-
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={filter === category ? "default" : "outline"}
-              onClick={() => setFilter(category)}
-              className={filter === category ? "bg-gradient-to-r from-blue-600 to-purple-600" : ""}
+    <section id="projects" className="py-20 bg-gray-900">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center mb-16 text-white">
+          Featured Projects
+        </h2>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {projects.map((project, index) => (
+            <div 
+              key={index}
+              className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-blue-500 transition-colors"
             >
-              <Filter className="w-4 h-4 mr-2" />
-              {category}
-            </Button>
-          ))}
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <Card key={project.id} className="group overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="relative overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={400}
-                  height={250}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="flex gap-2">
-                      <Button size="sm" className="bg-white/20 backdrop-blur-sm hover:bg-white/30">
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                      <Button size="sm" className="bg-white/20 backdrop-blur-sm hover:bg-white/30">
-                        <Github className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+              <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
+                Project Image
               </div>
               
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge variant="secondary">{project.category}</Badge>
-                  <span className="text-sm text-gray-500">{project.year}</span>
-                </div>
-                <CardTitle className="text-xl">{project.title}</CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <p className="text-gray-600 mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {project.title}
+                </h3>
+                <p className="text-gray-300 mb-4 leading-relaxed">
+                  {project.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map((tech, techIndex) => (
+                    <span 
+                      key={techIndex}
+                      className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm"
+                    >
                       {tech}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+                
+                <div className="flex space-x-4">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <Github size={16} />
+                    Code
+                  </Button>
+                  <Button size="sm" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+                    <ExternalLink size={16} />
+                    Live Demo
+                  </Button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
