@@ -15,6 +15,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Lock, Mail, User, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
+import {signIn} from 'next-auth/react'
+import { toast } from 'sonner'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
@@ -25,8 +27,22 @@ export default function Login() {
     password: '',
   })
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin =  async(e: React.FormEvent) => {
     e.preventDefault()
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: loginData.email,
+      password: loginData.password,
+      callbackUrl: "/"
+    })
+
+    if(res?.error){
+      toast.error("Login failed!!")
+    }
+
+    if(res?.ok){
+      toast.success("Logged in successfully!")
+    }
     console.log('Login:', loginData)
   }
 
@@ -56,9 +72,9 @@ export default function Login() {
 
         <Card className="backdrop-blur-lg bg-gray-900/80 shadow-2xl border border-gray-800 p-5 py-10">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-800 text-gray-300">
+            <TabsList className="grid w-full grid-cols-1 mb-6 bg-gray-800 text-gray-300">
               <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              {/* <TabsTrigger value="signup">Sign Up</TabsTrigger> */}
             </TabsList>
 
             {/* Login Form */}
@@ -125,12 +141,12 @@ export default function Login() {
                   >
                     Sign In
                   </Button>
-                  <p className="text-sm text-center text-gray-400">
+                  {/* <p className="text-sm text-center text-gray-400">
                     Don&apos;t have an account?{' '}
                     <button type="button" className="text-indigo-400 hover:underline">
                       Sign up instead
                     </button>
-                  </p>
+                  </p> */}
                 </CardFooter>
               </form>
             </TabsContent>
