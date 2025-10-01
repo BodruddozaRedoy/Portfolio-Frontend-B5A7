@@ -52,9 +52,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2">
-              <li className="text-gray-400">john.doe@example.com</li>
-              <li className="text-gray-400">+1 (555) 123-4567</li>
-              <li className="text-gray-400">New York, NY</li>
+              <li className="text-gray-400">bodruddozaredoy@gmail.com</li>
+              <li className="text-gray-400">+8801758383869</li>
+              <li className="text-gray-400">Mirpur, Dhaka, Bangladesh</li>
               <li>
                 <Link href="/login" className="text-blue-400 hover:text-blue-300 transition-colors">
                   Login
@@ -66,9 +66,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
           <p className="text-gray-400 flex items-center justify-center gap-2">
-            © {currentYear} John Doe. Made with 
-            <Heart className="w-4 h-4 text-red-500" />
-            using Next.js & Tailwind CSS
+            © {currentYear} DevRedoy. All Right Reserved 
           </p>
         </div>
       </div>
