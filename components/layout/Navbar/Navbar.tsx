@@ -39,7 +39,7 @@ export default function Navbar() {
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
             <Code className="w-8 h-8 text-blue-400" />
-            <span className="font-bold text-xl text-white">John Doe</span>
+            <span className="font-bold text-xl text-white">DevRedoy</span>
           </Link>
           
           {/* Desktop Navigation */}

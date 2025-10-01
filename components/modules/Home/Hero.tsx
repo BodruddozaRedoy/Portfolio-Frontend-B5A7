@@ -9,10 +9,10 @@ export default function Hero() {
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
-            John Doe
+            Bodruddoza Redoy
           </h1>
           <h2 className="text-2xl md:text-3xl text-gray-300 mb-8">
-            Full Stack Developer & UI/UX Enthusiast
+            Full Stack Developer & App Developer
           </h2>
           <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
             I create digital experiences that are fast, accessible, visually appealing, 

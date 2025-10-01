@@ -33,14 +33,14 @@ export default function About() {
             
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="text-gray-300">
-                <p><strong className="text-white">Name:</strong> John Doe</p>
-                <p><strong className="text-white">Email:</strong> hello@example.com</p>
-                <p><strong className="text-white">Location:</strong> San Francisco, CA</p>
+                <p><strong className="text-white">Name:</strong> Bodruddoza Redoy</p>
+                <p><strong className="text-white">Email:</strong> bodruddozaredoy@gmail.com</p>
+                <p><strong className="text-white">Location:</strong> Mirpur, Dhaka, Bangladesh</p>
               </div>
               <div className="text-gray-300">
-                <p><strong className="text-white">Experience:</strong> 5+ Years</p>
-                <p><strong className="text-white">Freelance:</strong> Available</p>
-                <p><strong className="text-white">Education:</strong> Computer Science</p>
+                <p><strong className="text-white">Learning Experience:</strong> 2+ Years</p>
+                <p><strong className="text-white">Professional Experience:</strong> 5+ Months</p>
+                <p><strong className="text-white">Available for work: </strong>Hybrid</p>
               </div>
             </div>
           </div>
