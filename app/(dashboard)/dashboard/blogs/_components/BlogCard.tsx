@@ -19,7 +19,7 @@ export default function BlogCard({ blog, onEdit, onDelete }: BlogCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-gray-800 text-white rounded-lg border border-gray-700 overflow-hidden hover:shadow-md transition-shadow">
       {blog.coverImage && (
         <img
           src={blog.coverImage}
@@ -29,7 +29,7 @@ export default function BlogCard({ blog, onEdit, onDelete }: BlogCardProps) {
       )}
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+          <h3 className="text-lg font-semibold text-white line-clamp-2">
             {blog.title}
           </h3>
           <span className={`px-2 py-1 text-xs rounded-full ${
@@ -41,7 +41,7 @@ export default function BlogCard({ blog, onEdit, onDelete }: BlogCardProps) {
           </span>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+        <p className="text-white text-sm mb-4 line-clamp-3">
           {blog.content}
         </p>
 
