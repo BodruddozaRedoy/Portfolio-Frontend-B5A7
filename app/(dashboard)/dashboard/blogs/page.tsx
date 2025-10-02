@@ -76,7 +76,7 @@ export default function BlogsDashboard() {
       published: formData.published,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      userId: 1 // This would come from auth context
+      userId: 1
     };
     
     setBlogs(prev => [newBlog, ...prev]);
@@ -119,13 +119,13 @@ export default function BlogsDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-gray-900 min-h-screen p-6 text-gray-100">
+      <div className="mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Blog Dashboard</h1>
-            <p className="text-gray-600 mt-2">Manage your blog posts</p>
+            <h1 className="text-3xl font-bold text-white">Blog Dashboard</h1>
+            <p className="text-gray-400 mt-2">Manage your blog posts</p>
           </div>
           <button
             onClick={() => setIsCreateModalOpen(true)}
@@ -137,7 +137,7 @@ export default function BlogsDashboard() {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4 mb-6">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
@@ -147,7 +147,7 @@ export default function BlogsDashboard() {
                 placeholder="Search blogs by title, content, or tags..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200 placeholder-gray-500"
               />
             </div>
 
@@ -157,7 +157,7 @@ export default function BlogsDashboard() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as any)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
               >
                 <option value="all">All Status</option>
                 <option value="published">Published</option>
@@ -168,7 +168,7 @@ export default function BlogsDashboard() {
             {/* Sort Order */}
             <button
               onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-700 transition-colors text-gray-200"
             >
               {sortOrder === 'newest' ? (
                 <SortDesc className="w-5 h-5" />
@@ -194,13 +194,13 @@ export default function BlogsDashboard() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
+            <div className="text-gray-500 mb-4">
               <Search className="w-16 h-16 mx-auto" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-white mb-2">
               No blogs found
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-400 mb-6">
               {searchTerm || statusFilter !== 'all' 
                 ? 'Try adjusting your search or filter criteria.'
                 : 'Get started by creating your first blog post.'}
@@ -218,21 +218,21 @@ export default function BlogsDashboard() {
 
         {/* Stats */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <div className="text-2xl font-bold text-gray-900">{blogs.length}</div>
-            <div className="text-gray-600">Total Blogs</div>
+          <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+            <div className="text-2xl font-bold text-white">{blogs.length}</div>
+            <div className="text-gray-400">Total Blogs</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <div className="text-2xl font-bold text-green-600">
+          <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+            <div className="text-2xl font-bold text-green-400">
               {blogs.filter(b => b.published).length}
             </div>
-            <div className="text-gray-600">Published</div>
+            <div className="text-gray-400">Published</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <div className="text-2xl font-bold text-yellow-600">
+          <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+            <div className="text-2xl font-bold text-yellow-400">
               {blogs.filter(b => !b.published).length}
             </div>
-            <div className="text-gray-600">Drafts</div>
+            <div className="text-gray-400">Drafts</div>
           </div>
         </div>
       </div>
