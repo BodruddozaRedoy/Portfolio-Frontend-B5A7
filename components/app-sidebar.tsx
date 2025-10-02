@@ -26,14 +26,16 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import useUserClient from "@/hooks/useUserClient"
+import { usePathname } from "next/navigation"
 
 
 
-// This is sample data.
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useUserClient()
+  const pathname = usePathname()
+  console.log(pathname)
 
   const data = {
     user: {
@@ -63,7 +65,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Dashboard",
         url: "/dashboard",
         icon: SquareTerminal,
-        isActive: true,
+        isActive: pathname === "/dashboard" ? true : false,
+      },
+      {
+        title: "Blogs",
+        url: "/dashboard/blogs",
+        icon: SquareTerminal,
+        isActive: pathname.includes("/blogs") ? true : false,
+      },
+      {
+        title: "Projects",
+        url: "/dashboard/projects",
+        icon: SquareTerminal,
+        isActive: pathname.includes("/projects") ? true : false,
       },
     ],
     projects: [
