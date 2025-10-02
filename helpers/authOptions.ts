@@ -19,7 +19,6 @@ declare module "next-auth/jwt" {
   }
 }
 
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -34,6 +33,8 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        console.log("credentials", credentials.email, credentials.password);
+
         try {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
@@ -46,25 +47,25 @@ export const authOptions: NextAuthOptions = {
               }),
             }
           );
-
+          console.log("Login API status:", res);
           if (!res.ok) {
             console.error("User login failed");
             return null;
           }
 
           const user = await res.json();
+          console.log(user)
 
           // ✅ must return an object with at least an `id`
-          if (user?.id) {
+          if (user?.data?.id) {
             return {
-              id: user.id.toString(),
-              name: user.name || user.email,
-              email: user.email,
-              accessToken: user.accessToken, // if API sends it
+              id: user?.data?.id.toString(),
+              name: user?.data?.name || user.email,
+              email: user?.data?.email,
             };
+          }else{
+            return null;
           }
-
-          return null;
         } catch (error) {
           console.error("Authorize error:", error);
           return null;
@@ -81,7 +82,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.accessToken = (user as any).accessToken; // cast because of custom field
       }
       return token;
     },
@@ -90,7 +90,6 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           ...session.user,
           id: token.id as string,
-          accessToken: token.accessToken as string,
         };
       }
       return session;
@@ -98,8 +97,6 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/auth/login", // optional custom login page
+    signIn: "/login", // optional custom login page
   },
 };
-
-export default NextAuth(authOptions);

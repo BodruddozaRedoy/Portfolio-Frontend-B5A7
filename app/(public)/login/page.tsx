@@ -17,6 +17,7 @@ import { Lock, Mail, User, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import {signIn} from 'next-auth/react'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
@@ -26,6 +27,7 @@ export default function Login() {
     email: '',
     password: '',
   })
+  const router = useRouter()
 
   const handleLogin =  async(e: React.FormEvent) => {
     e.preventDefault()
@@ -42,6 +44,8 @@ export default function Login() {
 
     if(res?.ok){
       toast.success("Logged in successfully!")
+      router.push("/")
+      
     }
     console.log('Login:', loginData)
   }
