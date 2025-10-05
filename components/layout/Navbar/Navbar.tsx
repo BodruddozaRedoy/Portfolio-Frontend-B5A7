@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Menu, X, Code, User, LogIn } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import useUserClient from '@/hooks/useUserClient'
+import useUserClient from '@/hooks/useGetUserClient'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)

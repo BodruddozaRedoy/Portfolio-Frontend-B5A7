@@ -1,41 +1,26 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Search, Filter, Plus, SortAsc, SortDesc } from 'lucide-react';
 import { Blog, BlogFormData } from '@/types/blog.type';
 import BlogCard from './_components/BlogCard';
 import BlogModal from './_components/BlogModal';
 import DeleteConfirmModal from './_components/DeleteConfirmModal';
+import useUserClient from '@/hooks/useGetUserClient';
+import { toast } from 'sonner';
+import useGetAllBlogs from '@/hooks/useGetAllBlogs';
 
-// Mock data - replace with actual API calls
-const mockBlogs: Blog[] = [
-  {
-    id: 1,
-    title: 'Getting Started with Next.js',
-    slug: 'getting-started-with-nextjs',
-    content: 'Learn how to build modern web applications with Next.js...',
-    coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500',
-    tags: ['Next.js', 'React', 'Web Development'],
-    published: true,
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z',
-    userId: 1
-  },
-  {
-    id: 2,
-    title: 'Mastering Tailwind CSS',
-    slug: 'mastering-tailwind-css',
-    content: 'Discover the power of utility-first CSS with Tailwind...',
-    tags: ['Tailwind', 'CSS', 'Design'],
-    published: false,
-    createdAt: '2024-01-10T14:30:00Z',
-    updatedAt: '2024-01-12T09:15:00Z',
-    userId: 1
-  }
-];
+// Helper function to create slugs from text
+const generateSlug = (text: string) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')   // remove special characters
+    .replace(/\s+/g, '-')       // replace spaces with hyphens
+    .replace(/-+/g, '-');       // collapse multiple hyphens
+};
 
 export default function BlogsDashboard() {
-  const [blogs, setBlogs] = useState<Blog[]>(mockBlogs);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
@@ -44,68 +29,62 @@ export default function BlogsDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  // Filter and sort blogs
-  const filteredBlogs = useMemo(() => {
-    return blogs
-      .filter(blog => {
-        const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           blog.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-        
-        const matchesStatus = statusFilter === 'all' || 
-                            (statusFilter === 'published' && blog.published) ||
-                            (statusFilter === 'draft' && !blog.published);
-        
-        return matchesSearch && matchesStatus;
-      })
-      .sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime();
-        const dateB = new Date(b.createdAt).getTime();
-        return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+  const { blogs, createBlog, updateBlog, deleteBlog } = useGetAllBlogs();
+  const { user } = useUserClient();
+
+  // Create blog
+  const handleCreateBlog = async (formData: BlogFormData) => {
+    if (!user?.id) return toast.error("User not found!");
+
+    try {
+      const slug = generateSlug(formData.title);
+
+      await createBlog({
+        ...formData,
+        slug,
+        userId: Number(user.id),
       });
-  }, [blogs, searchTerm, statusFilter, sortOrder]);
 
-  const handleCreateBlog = (formData: BlogFormData) => {
-    const newBlog: Blog = {
-      id: Math.max(...blogs.map(b => b.id)) + 1,
-      title: formData.title,
-      slug: formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      content: formData.content,
-      coverImage: formData.coverImage,
-      tags: formData.tags,
-      published: formData.published,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      userId: 1
-    };
-    
-    setBlogs(prev => [newBlog, ...prev]);
-    setIsCreateModalOpen(false);
+      toast.success("Blog created successfully!");
+      setIsCreateModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to create blog");
+    }
   };
 
-  const handleEditBlog = (formData: BlogFormData) => {
+  // Edit blog
+  const handleEditBlog = async (formData: BlogFormData) => {
     if (!selectedBlog) return;
-    
-    setBlogs(prev => prev.map(blog => 
-      blog.id === selectedBlog.id 
-        ? {
-            ...blog,
-            ...formData,
-            updatedAt: new Date().toISOString()
-          }
-        : blog
-    ));
-    
-    setIsEditModalOpen(false);
-    setSelectedBlog(null);
+
+    try {
+      const slug = generateSlug(formData.title);
+
+      await updateBlog(selectedBlog.id, {
+        ...formData,
+        slug,
+      });
+
+      toast.success("Blog updated successfully!");
+      setIsEditModalOpen(false);
+      setSelectedBlog(null);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update blog");
+    }
   };
 
-  const handleDeleteBlog = () => {
+  // Delete blog
+  const handleDeleteBlog = async () => {
     if (!selectedBlog) return;
-    
-    setBlogs(prev => prev.filter(blog => blog.id !== selectedBlog.id));
-    setIsDeleteModalOpen(false);
-    setSelectedBlog(null);
+    try {
+      await deleteBlog(selectedBlog.id);
+      toast.success("Blog deleted successfully!");
+      setIsDeleteModalOpen(false);
+      setSelectedBlog(null);
+    } catch (err) {
+      toast.error("Failed to delete blog");
+    }
   };
 
   const openEditModal = (blog: Blog) => {
@@ -167,7 +146,9 @@ export default function BlogsDashboard() {
 
             {/* Sort Order */}
             <button
-              onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
+              onClick={() =>
+                setSortOrder((prev) => (prev === 'newest' ? 'oldest' : 'newest'))
+              }
               className="flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-700 transition-colors text-gray-200"
             >
               {sortOrder === 'newest' ? (
@@ -181,11 +162,11 @@ export default function BlogsDashboard() {
         </div>
 
         {/* Blog Grid */}
-        {filteredBlogs.length > 0 ? (
+        {blogs?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredBlogs.map(blog => (
+            {blogs?.map((blog, index) => (
               <BlogCard
-                key={blog.id}
+                key={index}
                 blog={blog}
                 onEdit={openEditModal}
                 onDelete={openDeleteModal}
@@ -201,7 +182,7 @@ export default function BlogsDashboard() {
               No blogs found
             </h3>
             <p className="text-gray-400 mb-6">
-              {searchTerm || statusFilter !== 'all' 
+              {searchTerm || statusFilter !== 'all'
                 ? 'Try adjusting your search or filter criteria.'
                 : 'Get started by creating your first blog post.'}
             </p>
@@ -219,18 +200,18 @@ export default function BlogsDashboard() {
         {/* Stats */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-            <div className="text-2xl font-bold text-white">{blogs.length}</div>
+            <div className="text-2xl font-bold text-white">{blogs?.length}</div>
             <div className="text-gray-400">Total Blogs</div>
           </div>
           <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
             <div className="text-2xl font-bold text-green-400">
-              {blogs.filter(b => b.published).length}
+              {blogs?.filter((b) => b.published).length}
             </div>
             <div className="text-gray-400">Published</div>
           </div>
           <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
             <div className="text-2xl font-bold text-yellow-400">
-              {blogs.filter(b => !b.published).length}
+              {blogs?.filter((b) => !b.published).length}
             </div>
             <div className="text-gray-400">Drafts</div>
           </div>

@@ -1,13 +1,13 @@
 export interface Blog {
-  id: number;
+  id?: number;
   title: string;
   slug: string;
   content: string;
   coverImage?: string;
   tags: string[];
   published: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   userId: number;
 }
 

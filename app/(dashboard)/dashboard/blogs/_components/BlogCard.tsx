@@ -46,7 +46,7 @@ export default function BlogCard({ blog, onEdit, onDelete }: BlogCardProps) {
         </p>
 
         <div className="flex flex-wrap gap-1 mb-4">
-          {blog.tags.map((tag) => (
+          {blog?.tags?.map((tag) => (
             <span
               key={tag}
               className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded"

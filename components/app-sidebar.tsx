@@ -25,7 +25,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import useUserClient from "@/hooks/useUserClient"
+import useUserClient from "@/hooks/useGetUserClient"
 import { usePathname } from "next/navigation"
 
 

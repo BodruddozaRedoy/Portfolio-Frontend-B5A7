@@ -19,7 +19,7 @@ export default function DeleteConfirmModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg w-full max-w-md">
+      <div className="bg-gray-900 rounded-lg w-full max-w-md">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-semibold text-red-600">Delete Blog</h2>
           <button
@@ -31,7 +31,7 @@ export default function DeleteConfirmModal({
         </div>
 
         <div className="p-6">
-          <p className="text-gray-700 mb-4">
+          <p className="text-gray-100 mb-4">
             Are you sure you want to delete the blog post &quot;{blogTitle}&quot;? 
             This action cannot be undone.
           </p>
