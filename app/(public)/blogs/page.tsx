@@ -10,15 +10,6 @@ import { createBlogAction, deleteBlogAction, updateBlogAction } from '@/actions/
 import BlogCard from '@/app/(dashboard)/dashboard/blogs/_components/BlogCard';
 import BlogCardSkeleton from '@/components/common/BlogSkeleton';
 
-// Helper function to create slugs from text
-const generateSlug = (text: string) => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-};
 
 export default function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,7 +20,7 @@ export default function BlogsPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  const { blogs } = useGetAllBlogs();
+  const { blogs, loading } = useGetAllBlogs();
 
   const { user } = useUserClient();
 
@@ -95,24 +86,22 @@ export default function BlogsPage() {
         </div>
 
         {/* Blog Grid */}
-        {filteredBlogs?.length > 0 ? (
+        {loading ? (
+          <div className='grid grid-cols-3 gap-2 w-full'>
+            {[...Array(6)].map((_, i) => (
+              <BlogCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredBlogs?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogs?.map((blog, index) => (
-              <BlogCard
-                key={index}
-                blog={blog}
-              // onEdit={openEditModal}
-              // onDelete={openDeleteModal}
-              />
+            {filteredBlogs.map((blog) => (
+              <BlogCard key={blog.id} blog={blog} />
             ))}
           </div>
         ) : (
-          <div className='grid grid-cols-3 gap-2 w-full'>
-            {[0,1,2,3,4,5]?.map((sk, index) => (
-              <BlogCardSkeleton key={index}/>
-            ))}
-          </div>
+          <p className="text-gray-400 text-center">No blogs found.</p>
         )}
+
       </div>
     </div>
   );
