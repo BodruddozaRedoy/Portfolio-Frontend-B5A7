@@ -1,16 +1,21 @@
+import { User } from "./user.types";
+
 export interface Project {
-  id?: number;
+  id: number;
   title: string;
-  slug: string;
+  slug?: string | null;
   description: string;
   techStack: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  thumbnail?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  githubUrl?: string | null;
+  liveUrl?: string | null;
+  thumbnail?: string | null;
+  createdAt: string;
+  updatedAt: string;
+
   userId: number;
+  user?: User;
 }
+
 
 export interface ProjectFormData {
   title: string;

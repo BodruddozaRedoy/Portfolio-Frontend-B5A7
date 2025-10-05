@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Calendar, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 const blogs = [
   {
@@ -67,9 +68,11 @@ export default function Blogs() {
         </div>
         
         <div className="text-center mt-12">
+          <Link href={"/blogs"}>
           <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800">
-            View All Articles
+            View All Blogs
           </Button>
+          </Link>
         </div>
       </div>
     </section>
