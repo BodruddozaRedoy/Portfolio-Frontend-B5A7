@@ -1,4 +1,3 @@
-// app/blog/[blogId]/page.tsx
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { BlogDetails } from './_components/BlogDetails';

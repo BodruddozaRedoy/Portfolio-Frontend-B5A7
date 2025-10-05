@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import useGetAllBlogs from '@/hooks/useGetAllBlogs';
 import { createBlogAction, deleteBlogAction, updateBlogAction } from '@/actions/blogActions';
 import BlogCard from '@/app/(dashboard)/dashboard/blogs/_components/BlogCard';
+import BlogCardSkeleton from '@/components/common/BlogSkeleton';
 
 // Helper function to create slugs from text
 const generateSlug = (text: string) => {
@@ -106,26 +107,10 @@ export default function BlogsPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="text-gray-500 mb-4">
-              <Search className="w-16 h-16 mx-auto" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              No blogs found
-            </h3>
-            <p className="text-gray-400 mb-6">
-              {searchTerm || statusFilter !== 'all'
-                ? 'Try adjusting your search or filter criteria.'
-                : 'Get started by creating your first blog post.'}
-            </p>
-            {!searchTerm && statusFilter === 'all' && (
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Create Your First Blog
-              </button>
-            )}
+          <div className='grid grid-cols-3 gap-2 w-full'>
+            {[0,1,2,3,4,5]?.map((sk, index) => (
+              <BlogCardSkeleton key={index}/>
+            ))}
           </div>
         )}
       </div>

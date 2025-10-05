@@ -1,4 +1,3 @@
-// components/blog-details.tsx
 import { Calendar, Clock, User, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
