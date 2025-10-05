@@ -79,6 +79,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: SquareTerminal,
         isActive: pathname.includes("/projects") ? true : false,
       },
+      {
+        title: "Home",
+        url: "/",
+        icon: SquareTerminal,
+      },
     ],
     projects: [
       {

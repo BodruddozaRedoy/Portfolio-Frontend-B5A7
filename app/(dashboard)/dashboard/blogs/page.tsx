@@ -9,6 +9,7 @@ import DeleteConfirmModal from './_components/DeleteConfirmModal';
 import useUserClient from '@/hooks/useGetUserClient';
 import { toast } from 'sonner';
 import useGetAllBlogs from '@/hooks/useGetAllBlogs';
+import { createBlogAction, deleteBlogAction, updateBlogAction } from '@/actions/blogActions';
 
 // Helper function to create slugs from text
 const generateSlug = (text: string) => {
@@ -29,7 +30,8 @@ export default function BlogsDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  const { blogs, createBlog, updateBlog, deleteBlog } = useGetAllBlogs();
+  const { blogs } = useGetAllBlogs();
+
   const { user } = useUserClient();
 
   // Create blog
@@ -39,7 +41,7 @@ export default function BlogsDashboard() {
     try {
       const slug = generateSlug(formData.title);
 
-      await createBlog({
+      await createBlogAction({
         ...formData,
         slug,
         userId: Number(user.id),
@@ -60,7 +62,7 @@ export default function BlogsDashboard() {
     try {
       const slug = generateSlug(formData.title);
 
-      await updateBlog(selectedBlog.id, {
+      await updateBlogAction(selectedBlog.id, {
         ...formData,
         slug,
       });
@@ -78,7 +80,7 @@ export default function BlogsDashboard() {
   const handleDeleteBlog = async () => {
     if (!selectedBlog) return;
     try {
-      await deleteBlog(selectedBlog.id);
+      await deleteBlogAction(selectedBlog.id);
       toast.success("Blog deleted successfully!");
       setIsDeleteModalOpen(false);
       setSelectedBlog(null);

@@ -9,7 +9,11 @@ export default function useGetAllProjects() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
+        next: {
+            
+        }
+      });
       if (!res.ok) throw new Error("Failed to fetch projects");
       const data = await res.json();
       setProjects(data?.data || []);
