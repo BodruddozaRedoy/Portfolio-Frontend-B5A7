@@ -36,7 +36,7 @@ export default async function BlogDetailsPage({
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/blog/${blogId}`,
       {
-        next: { revalidate: 60 }, // ✅ ISR every 60 seconds
+        next: { tags: ["blogs"] }, // ✅ ISR every 60 seconds
       }
     );
 
@@ -68,7 +68,7 @@ export async function generateMetadata({
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/blog/${blogId}`,
-      { next: { revalidate: 300 } } // cache metadata for 5 mins
+      { next: { tags: ["blogs"] } } 
     );
 
     if (!res.ok) {
