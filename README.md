@@ -2,6 +2,8 @@
 
 A full-stack ready portfolio and content management frontend built with the Next.js App Router. The public site showcases Bodruddoza Redoy's profile, while an authenticated dashboard lets the author curate blogs and projects against a headless API.
 
+## Live Link: https://portfolio-frontend-b5-a7.vercel.app/
+
 ## Features
 - Marketing pages for hero, about, skills, featured projects, blog highlights, and a contact form (client-side only today).
 - Projects grid fed by `NEXT_PUBLIC_BASE_API` with optimistic updates for create, edit, and delete operations.
