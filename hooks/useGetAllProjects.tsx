@@ -1,102 +1,57 @@
-import { useEffect, useState } from "react";
-import { Project, ProjectFormData } from "@/types/project.type";
+'use client'
+import { useEffect, useState } from 'react'
+import { Project, ProjectFormData } from '@/types/project.type'
+import {
+  createProjectAction,
+  updateProjectAction,
+  deleteProjectAction,
+} from '@/actions/projectActions'
 
 export default function useGetAllProjects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
 
   // ✅ Fetch all projects
   const fetchProjects = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
-        next: {
-            
-        }
-      });
-      if (!res.ok) throw new Error("Failed to fetch projects");
-      const data = await res.json();
-      setProjects(data?.data || []);
+        next: { tags: ['projects'] },
+      })
+      if (!res.ok) throw new Error('Failed to fetch projects')
+      const data = await res.json()
+      setProjects(data?.data || [])
     } catch (err) {
-      console.error("Error fetching projects:", err);
+      console.error('Error fetching projects:', err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    fetchProjects()
+  }, [])
 
-  // ✅ Create a project
+  // ✅ Create a project (with ISR revalidation)
   const createProject = async (formData: ProjectFormData & { userId: number; slug: string }) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) throw new Error("Failed to create project");
-
-      const responseData = await res.json();
-      const newProject = responseData?.data || responseData;
-
-      setProjects((prev) => [newProject, ...prev]);
-      return newProject;
-    } catch (err) {
-      console.error("Error creating project:", err);
-      throw err;
-    }
-  };
+    const res = await createProjectAction(formData)
+    setProjects((prev) => [res.data, ...prev])
+    return res
+  }
 
   // ✅ Update a project
   const updateProject = async (id: number, data: Partial<ProjectFormData>) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Failed to update project");
-
-      const responseData = await res.json();
-      const updatedProject = responseData?.data || responseData;
-
-      setProjects((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, ...updatedProject } : p))
-      );
-      return updatedProject;
-    } catch (err) {
-      console.error("Error updating project:", err);
-      throw err;
-    }
-  };
+    const res = await updateProjectAction(id, data)
+    setProjects((prev) => prev.map((p) => (p.id === id ? { ...p, ...res.data } : p)))
+    return res
+  }
 
   // ✅ Delete a project
   const deleteProject = async (id: number) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
-        method: "DELETE",
-      });
+    await deleteProjectAction(id)
+    setProjects((prev) => prev.filter((p) => p.id !== id))
+    return id
+  }
 
-      if (!res.ok) throw new Error("Failed to delete project");
-
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-      return id;
-    } catch (err) {
-      console.error("Error deleting project:", err);
-      throw err;
-    }
-  };
-
-  return {
-    projects,
-    loading,
-    fetchProjects,
-    createProject,
-    updateProject,
-    deleteProject,
-  };
+  return { projects, loading, fetchProjects, createProject, updateProject, deleteProject }
 }
