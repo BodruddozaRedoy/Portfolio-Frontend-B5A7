@@ -27,6 +27,7 @@ const eslintConfig = [
 
       "react/no-unescaped-entities": "warn",
       "react/prop-types": "off",
+      "@typescript-eslint/no-explicit-any":"warn"
     },
   },
 ];
