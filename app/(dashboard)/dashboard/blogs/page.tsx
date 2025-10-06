@@ -10,15 +10,16 @@ import useUserClient from '@/hooks/useGetUserClient';
 import { toast } from 'sonner';
 import useGetAllBlogs from '@/hooks/useGetAllBlogs';
 import { createBlogAction, deleteBlogAction, updateBlogAction } from '@/actions/blogActions';
+import BlogCardSkeleton from '@/components/common/BlogSkeleton';
 
 // Helper function to create slugs from text
 const generateSlug = (text: string) => {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '')   
-    .replace(/\s+/g, '-')       
-    .replace(/-+/g, '-');       
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 };
 
 export default function BlogsDashboard() {
@@ -30,7 +31,7 @@ export default function BlogsDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  const { blogs } = useGetAllBlogs();
+  const { blogs, loading } = useGetAllBlogs();
 
   const { user } = useUserClient();
 
@@ -100,8 +101,8 @@ export default function BlogsDashboard() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen p-6 text-gray-100">
-      <div className="mx-auto">
+    <div className="bg-gray-900 min-h-screen p-6 text-gray-100 w-full">
+      <div className="mx-auto w-full">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
@@ -161,6 +162,14 @@ export default function BlogsDashboard() {
               {sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
             </button>
           </div>
+        </div>
+
+        <div  className='grid grid-cols-3 gap-2 w-full'>
+          {
+            loading && [0, 1, 2, 3, 4, 5]?.map((_, index) => (
+              <BlogCardSkeleton key={index} />
+            ))
+          }
         </div>
 
         {/* Blog Grid */}

@@ -22,11 +22,11 @@ export default function Navbar() {
   }, [])
 
   const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Blog', href: '#blogs' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    // { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'Blog', href: '/blogs' },
+    { name: 'Contact', href: '/contact' },
   ]
 
   return (
@@ -48,13 +48,13 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-800/50"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
             {
               status === "authenticated" ? <Link

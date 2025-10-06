@@ -8,7 +8,7 @@ export default function PublicLayout({children}:{children:React.ReactNode}) {
         <nav>
             <Navbar/>
         </nav>
-        <main className=''>
+        <main className='mt-20'>
             {children}
         </main>
         <footer>

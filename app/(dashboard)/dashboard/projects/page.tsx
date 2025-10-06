@@ -8,6 +8,7 @@ import DeleteConfirmModal from '../blogs/_components/DeleteConfirmModal';
 import ProjectCard from './_components/ProjectCard';
 import ProjectModal from './_components/ProjectModal';
 import useGetAllProjects from '@/hooks/useGetAllProjects';
+import BlogCardSkeleton from '@/components/common/BlogSkeleton';
 
 // Helper to generate slugs
 const generateSlug = (text: string) => {
@@ -27,7 +28,7 @@ export default function ProjectDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
-  const { projects, createProject, updateProject, deleteProject } = useGetAllProjects();
+  const { projects, createProject, updateProject, deleteProject, loading } = useGetAllProjects();
   const { user } = useUserClient();
 
   // Create Project
@@ -121,6 +122,14 @@ export default function ProjectDashboard() {
             {sortOrder === 'newest' ? <SortDesc className="w-5 h-5" /> : <SortAsc className="w-5 h-5" />}
             {sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
           </button>
+        </div>
+
+        <div className='grid grid-cols-3 gap-2 w-full'>
+          {
+            loading && [0, 1, 2, 3, 4, 5]?.map((_, index) => (
+              <BlogCardSkeleton key={index} />
+            ))
+          }
         </div>
 
         {/* Projects Grid */}

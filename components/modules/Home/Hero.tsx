@@ -15,27 +15,31 @@ export default function Hero() {
             Full Stack Developer & App Developer
           </h2>
           <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-            I create digital experiences that are fast, accessible, visually appealing, 
+            I create digital experiences that are fast, accessible, visually appealing,
             and responsive. Let's build something amazing together.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
-              View My Work
-            </Button>
-            <Button variant="outline" size="lg" className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-3">
-              Download Resume
-            </Button>
+            <a href="#projects">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+                View My Work
+              </Button>
+            </a>
+            <a target='__blank' href="https://drive.google.com/file/d/10Kwe-En0pNqoT9vwGKWp2324ynC8q-0b/view?usp=sharing">
+              <Button variant="outline" size="lg" className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-3">
+                Download Resume
+              </Button>
+            </a>
           </div>
 
           <div className="flex justify-center space-x-6 mb-16">
-            <a href="https://github.com" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://github.com/BodruddozaRedoy" className="text-gray-400 hover:text-white transition-colors">
               <Github size={24} />
             </a>
-            <a href="https://linkedin.com" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://www.linkedin.com/in/bodruddozaredoy-637789197/" className="text-gray-400 hover:text-white transition-colors">
               <Linkedin size={24} />
             </a>
-            <a href="mailto:hello@example.com" className="text-gray-400 hover:text-white transition-colors">
+            <a href="mailto:bodruddozaredoy@gmail.com" className="text-gray-400 hover:text-white transition-colors">
               <Mail size={24} />
             </a>
           </div>

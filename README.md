@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevRedoy Portfolio Frontend
+
+A full-stack ready portfolio and content management frontend built with the Next.js App Router. The public site showcases Bodruddoza Redoy's profile, while an authenticated dashboard lets the author curate blogs and projects against a headless API.
+
+## Features
+- Marketing pages for hero, about, skills, featured projects, blog highlights, and a contact form (client-side only today).
+- Projects grid fed by `NEXT_PUBLIC_BASE_API` with optimistic updates for create, edit, and delete operations.
+- Blog list, detail view, and dashboard management powered by server actions, incremental cache revalidation, and skeleton loading states.
+- NextAuth credential flow that proxies `/auth/login` on the API, with middleware-protected `/dashboard` routes.
+- Responsive layout built with Tailwind CSS v4, shadcn/ui primitives, Radix UI, and lucide-react icons.
+- Toast feedback via Sonner, reusable hooks, strongly typed models, and path aliases for clean imports.
+
+## Tech Stack
+- Next.js 15 (App Router) + React 19 + TypeScript
+- Tailwind CSS v4 with theme tokens and shadcn/ui components
+- NextAuth.js (credentials provider)
+- Turbopack dev/build pipeline, ESLint (flat config)
+- Sonner notifications, Radix UI, lucide-react iconography
 
 ## Getting Started
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. **Configure environment variables** - create a `.env` file (see below).
+3. **Run the app**
+   ```bash
+   npm run dev
+   ```
+   Visit `http://localhost:3000`.
+4. **Optional checks**
+   - `npm run lint`
+   - `npm run build && npm run start`
 
-First, run the development server:
+> **Node**: Next.js 15 requires Node.js 18.18+ (Node 20+ recommended).
 
+## Environment Variables
+| Name | Required | Description |
+| ---- | :------: | ----------- |
+| `NEXT_PUBLIC_BASE_API` | Yes | Base URL of the backend API (`/project`, `/blog`, `/auth/login` endpoints are expected). |
+| `NEXTAUTH_SECRET` | Yes | Secret for signing NextAuth JWTs and sessions. |
+| `NEXTAUTH_URL` | Optional | Needed in production if the site is not served from `http://localhost:3000`. |
+
+Example `.env`:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_BASE_API=http://localhost:5000/api/v1
+NEXTAUTH_SECRET=replace-with-strong-secret
+NEXTAUTH_URL=http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure (abridged)
+```
+app/
+  (public)/           # Public-facing routes (home, blogs, projects, contact, login)
+  (dashboard)/        # Authenticated dashboard shell + nested resource pages
+  api/auth/[...nextauth]/route.ts  # NextAuth handler bridging to backend
+components/
+  layout/             # Navbar, footer, sidebar
+  modules/Home/       # Hero, About, Skills, Projects, Blog, Contact sections
+  common/             # Skeleton loaders and shared pieces
+  ui/                 # shadcn-generated primitives
+actions/              # Server actions for blog CRUD + cache revalidation
+hooks/                # API/data hooks (blogs, projects, user session, responsive helpers)
+types/                # Blog, project, and user TypeScript models
+helpers/authOptions.ts# NextAuth credentials provider configuration
+provider/             # Client-side SessionProvider wrapper
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Integration
+- **Blogs**: `GET/POST /blog`, `PATCH/DELETE /blog/:id` (mutations use server actions that revalidate `/blogs`, `/dashboard/blogs`, and tag caches).
+- **Projects**: `GET/POST /project`, `PATCH/DELETE /project/:id` (handled via client data hook for optimistic UI updates).
+- **Auth**: `POST /auth/login` returns `{ data: { id, name, email } }` used by NextAuth credentials provider.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If an endpoint responds with non-2xx status the UI shows Sonner errors and falls back to skeleton or empty states.
 
-## Learn More
+## Authentication & Routing
+- `AuthProvider` wraps the tree with `SessionProvider`.
+- `middleware.ts` redirects unauthenticated users from `/dashboard*` to `/login`.
+- `useGetUserClient` exposes the active NextAuth session for navbar and dashboard UI.
 
-To learn more about Next.js, take a look at the following resources:
+## Styling & UX
+- Global theme tokens defined in `app/globals.css` map to Tailwind CSS v4 custom properties.
+- Components lean on shadcn/ui (cards, tabs, badges, sidebar) with Radix behavior and lucide icons.
+- Loading states supplied via `Skeleton` components for both blog and project dashboards.
+- Contact form currently logs submissions to the console; wire it to your API or email service as needed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Known Gaps & Next Steps
+- Public `/projects` and `/contact` route components are placeholders awaiting real UI.
+- Contact form lacks a backend integration.
+- Replace hard-coded social links and imagery with live data once available from the API.
+- Remove development `console.log` statements before production deployment.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tooling Notes
+- `next.config.ts` allows remote images from any HTTPS host.
+- ESLint flat config (`eslint.config.mjs`) extends `next/core-web-vitals` and `next/typescript`.
+- `components.json` tracks shadcn/ui setup with aliases like `@/components` and `@/lib/utils`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+No license file is present; add one if you plan to distribute or open-source the project.

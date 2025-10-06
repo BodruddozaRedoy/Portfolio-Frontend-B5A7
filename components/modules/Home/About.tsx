@@ -9,8 +9,8 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           <div>
             <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <div className="w-72 h-72 bg-gray-800 rounded-full flex items-center justify-center text-gray-400">
-                Your Photo
+              <div className="w-72 h-72 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 overflow-hidden object-cover object-center">
+                <img src="https://res.cloudinary.com/dcrs7po93/image/upload/v1757882228/620829347212176702376_jmlddo.jpg" alt="" />
               </div>
             </div>
           </div>
@@ -20,7 +20,7 @@ export default function About() {
               Crafting Digital Experiences
             </h3>
             <p className="text-gray-300 text-lg leading-relaxed">
-              I'm a passionate full-stack developer with over 5 years of experience 
+              I'm a passionate full-stack developer with over 2+ years of learning experience and 5+ months of professional experience 
               creating web applications that solve real-world problems. I specialize 
               in modern JavaScript frameworks and love working on projects that 
               challenge me to grow.

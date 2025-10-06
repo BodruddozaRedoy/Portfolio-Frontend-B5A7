@@ -11,7 +11,10 @@ export default function useGetAllBlogs() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
         next: { tags: ["blogs"] },
       });
-      if (!res.ok) throw new Error("Failed to fetch blogs");
+      if (!res.ok) {
+        console.log(res)
+        throw new Error("Failed to fetch blogs");
+      }
       const data = await res.json();
       setBlogs(data?.data);
     } catch (err) {
