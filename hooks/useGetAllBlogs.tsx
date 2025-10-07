@@ -28,5 +28,5 @@ export default function useGetAllBlogs() {
     fetchBlogs();
   }, []);
 
-  return { blogs, loading, fetchBlogs };
+  return { blogs, loading, fetchBlogs, setBlogs };
 }

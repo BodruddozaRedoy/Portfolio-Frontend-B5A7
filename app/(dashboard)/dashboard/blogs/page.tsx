@@ -31,24 +31,24 @@ export default function BlogsDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  const { blogs, loading } = useGetAllBlogs();
-
+  const { blogs, loading, fetchBlogs, setBlogs } = useGetAllBlogs();
   const { user } = useUserClient();
 
-  // Create blog
+  // ✅ Create blog
   const handleCreateBlog = async (formData: BlogFormData) => {
     if (!user?.id) return toast.error("User not found!");
 
     try {
       const slug = generateSlug(formData.title);
 
-      await createBlogAction({
+      const res = await createBlogAction({
         ...formData,
         slug,
         userId: Number(user.id),
       });
 
       toast.success("Blog created successfully!");
+      setBlogs((prev) => [res.data, ...prev]); // instant UI update
       setIsCreateModalOpen(false);
     } catch (err) {
       console.error(err);
@@ -56,19 +56,23 @@ export default function BlogsDashboard() {
     }
   };
 
-  // Edit blog
+  // ✅ Edit blog
   const handleEditBlog = async (formData: BlogFormData) => {
     if (!selectedBlog) return;
 
     try {
       const slug = generateSlug(formData.title);
 
-      await updateBlogAction(selectedBlog.id, {
+      const res = await updateBlogAction(selectedBlog.id, {
         ...formData,
         slug,
       });
 
       toast.success("Blog updated successfully!");
+      // instant update in UI
+      setBlogs((prev) =>
+        prev.map((b) => (b.id === selectedBlog.id ? { ...b, ...res.data } : b))
+      );
       setIsEditModalOpen(false);
       setSelectedBlog(null);
     } catch (err) {
@@ -77,12 +81,14 @@ export default function BlogsDashboard() {
     }
   };
 
-  // Delete blog
+  // ✅ Delete blog
   const handleDeleteBlog = async () => {
     if (!selectedBlog) return;
     try {
       await deleteBlogAction(selectedBlog.id);
       toast.success("Blog deleted successfully!");
+      // instant removal from UI
+      setBlogs((prev) => prev.filter((b) => b.id !== selectedBlog.id));
       setIsDeleteModalOpen(false);
       setSelectedBlog(null);
     } catch (err) {
@@ -99,6 +105,29 @@ export default function BlogsDashboard() {
     setSelectedBlog(blog);
     setIsDeleteModalOpen(true);
   };
+
+  // ✅ Filter + Sort logic
+  const filteredBlogs = blogs
+    .filter((b) => {
+      const matchesSearch =
+        b.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        b.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        b.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      const matchesStatus =
+        statusFilter === 'all'
+          ? true
+          : statusFilter === 'published'
+          ? b.published
+          : !b.published;
+
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) =>
+      sortOrder === 'newest'
+        ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
 
   return (
     <div className="bg-gray-900 min-h-screen p-6 text-gray-100 w-full">
@@ -164,20 +193,18 @@ export default function BlogsDashboard() {
           </div>
         </div>
 
-        <div  className='grid grid-cols-3 gap-2 w-full'>
-          {
-            loading && [0, 1, 2, 3, 4, 5]?.map((_, index) => (
-              <BlogCardSkeleton key={index} />
-            ))
-          }
-        </div>
-
-        {/* Blog Grid */}
-        {blogs?.length > 0 ? (
+        {/* Blog Cards */}
+        {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogs?.map((blog, index) => (
+            {[...Array(6)].map((_, i) => (
+              <BlogCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredBlogs.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredBlogs.map((blog) => (
               <BlogCard
-                key={index}
+                key={blog.id}
                 blog={blog}
                 onEdit={openEditModal}
                 onDelete={openDeleteModal}

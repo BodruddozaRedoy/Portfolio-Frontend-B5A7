@@ -4,22 +4,22 @@ const skills = [
   {
     category: "Frontend",
     icon: <Code2 className="w-8 h-8" />,
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vue.js"]
+    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"]
   },
   {
     category: "Backend",
     icon: <Database className="w-8 h-8" />,
-    skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "GraphQL"]
+    skills: ["Node.js", "Express.js", "PostgreSQL", "MongoDB"]
   },
   {
-    category: "UI/UX",
+    category: "CMS",
     icon: <Palette className="w-8 h-8" />,
-    skills: ["Figma", "Adobe XD", "Prototyping", "Wireframing", "User Research"]
+    skills: ["Wordpress", "Shopify"]
   },
   {
     category: "Mobile",
     icon: <Smartphone className="w-8 h-8" />,
-    skills: ["React Native", "Flutter", "iOS", "Android", "PWA"]
+    skills: ["React Native"]
   }
 ];
 
