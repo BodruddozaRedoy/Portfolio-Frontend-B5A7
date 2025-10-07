@@ -1,39 +1,62 @@
 'use client';
 
-import { useState } from 'react';
-import { Search, Filter, Plus, SortAsc, SortDesc } from 'lucide-react';
-import { Blog, BlogFormData } from '@/types/blog.type';
-import useUserClient from '@/hooks/useGetUserClient';
-import { toast } from 'sonner';
-import useGetAllBlogs from '@/hooks/useGetAllBlogs';
-import { createBlogAction, deleteBlogAction, updateBlogAction } from '@/actions/blogActions';
-import BlogCard from '@/app/(dashboard)/dashboard/blogs/_components/BlogCard';
-import BlogCardSkeleton from '@/components/common/BlogSkeleton';
+import { useState, useMemo } from 'react';
+import { Search, Filter, SortAsc, SortDesc } from 'lucide-react';
 import useGetAllProjects from '@/hooks/useGetAllProjects';
 import ProjectCard from '@/app/(dashboard)/dashboard/projects/_components/ProjectCard';
-
+import BlogCardSkeleton from '@/components/common/BlogSkeleton';
+import { Project } from '@/types/project.type'; // 👈 make sure this exists
 
 export default function ProjectPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | string>('all');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   const { projects, loading } = useGetAllProjects();
 
+  // ✅ Extract unique categories dynamically
+  const categories = useMemo(() => {
+    if (!projects) return [];
+    const unique = Array.from(new Set(projects.map((p: Project) => p.category).filter(Boolean)));
+    return unique;
+  }, [projects]);
 
-  // const filteredProjects = projects?.filter((prev: any) => prev.published === true)
+  // ✅ Filtering and sorting logic
+  const filteredProjects = useMemo(() => {
+    let filtered = projects || [];
 
-  console.log(projects)
+    // Filter by category
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter((p: Project) => p.category === categoryFilter);
+    }
+
+    // Search by title, description, or tech stack
+    if (searchTerm.trim()) {
+      const search = searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (p: Project) =>
+          p.title?.toLowerCase().includes(search) ||
+          p.description?.toLowerCase().includes(search) ||
+          p.technologies?.some((tech) => tech.toLowerCase().includes(search))
+      );
+    }
+
+    // Sort by date
+    filtered = filtered.sort((a: Project, b: Project) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
+    return filtered;
+  }, [projects, searchTerm, categoryFilter, sortOrder]);
 
   return (
     <div className="bg-gray-900 min-h-screen p-6 text-gray-100 mt-20">
       <div className="mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-white">All Projects</h1>
-            {/* <p className="text-gray-400 mt-2">Manage your blog posts</p> */}
-          </div>
+          <h1 className="text-3xl font-bold text-white">All Projects</h1>
         </div>
 
         {/* Filters and Search */}
@@ -44,24 +67,27 @@ export default function ProjectPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search blogs by title, content, or tags..."
+                placeholder="Search projects by title, description, or tech..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200 placeholder-gray-500"
               />
             </div>
 
-            {/* Status Filter */}
+            {/* Category Filter */}
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-gray-400" />
               <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
                 className="px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
               >
-                <option value="all">All Status</option>
-                <option value="published">Published</option>
-                <option value="draft">Draft</option>
+                <option value="all">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -82,23 +108,22 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        {/* Blog Grid */}
+        {/* Project Grid */}
         {loading ? (
-          <div className='grid grid-cols-3 gap-2 w-full'>
+          <div className="grid grid-cols-3 gap-2 w-full">
             {[...Array(6)].map((_, i) => (
               <BlogCardSkeleton key={i} />
             ))}
           </div>
-        ) : projects?.length > 0 ? (
+        ) : filteredProjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         ) : (
           <p className="text-gray-400 text-center">No projects found.</p>
         )}
-
       </div>
     </div>
   );
